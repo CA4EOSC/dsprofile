@@ -25,21 +25,36 @@ $ pytest --cov=ncmetadata tests
 ## Usage
 
 ```bash
-usage: ncmetadata [-h] [-o {category,group}] [-e <group0>,<group1>,...] [-m] [-d] filename
+usage: dsprofile [-h] {netcdf,tiff,shape} ...
 
-Extracts metadata from netCDF4 files
+Describes datasets in a variety of formats
+
+options:
+  -h, --help           show this help message and exit
+
+Dataset formats:
+  {netcdf,tiff,shape}
+    netcdf             Extracts metadata from netCDF4 files
+    tiff               Extracts metadata from GeoTIFF files
+    shape              Extracts metadata from ESRI Shape files
+```
+
+## NetCDF Options
+
+```bash
+usage: dsprofile netcdf [-h] [-o {category,group}] [-e <group0>,<group1>,...] [-m] [-d] filename
 
 positional arguments:
   filename
 
 options:
-  -h, --help                show this help message and exit
-  -o {category,group}       --order-by {category,group}
-                            (default group)
+  -h, --help            show this help message and exit
+  -o {category,group}, --order-by {category,group}
+                        (default group)
   -e <group0>,<group1>,..., --exclude-groups <group0>,<group1>,...
-                            Exclude each of the named <group> arguments
-  -m, --omit-metadata       Output only netCDF file contents, not file metadata
-  -d, --omit-digest         Do not include a hash digest in file metadata
+                        Exclude each of the named <group> arguments
+  -m, --omit-metadata   Output only netCDF file contents, not file metadata
+  -d, --omit-digest     Do not include a hash digest in file metadata
 ```
 
 The `--order-by` option allows the resulting output to be arranged in one of two ways:
@@ -53,11 +68,15 @@ The `--omit-digest` option prevents calculation of a SHA256 hash for the process
 This may be desirable for very large files or test workflows to avoid the potentially
 time-consuming hashing operation.
 
-## Example
+### NetCDF Example
 
 For example, to report on the contents of the netCDF4 file `test.nc` using the default
 output options...
 
 ```bash
-$ ncmetadata test.nc
+$ dsprofile netcdf test.nc
 ```
+
+## GeoTiff Options
+
+## ESRI Shapefile Options

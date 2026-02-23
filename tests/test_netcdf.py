@@ -2,9 +2,9 @@ import os
 
 import pytest
 
-from ncmetadata.reader import (
+from dsprofile.lib.netcdf import (
+    NetCDFReader,
     exclude_groups,
-    read_dataset,
     walk_groups
 )
 
@@ -29,19 +29,30 @@ def synthetic_test_file():
 
 
 class TestGroups:
+    def test_reader_instance(self, synthetic_test_file):
+        """
+          Can an instance of the NetCDFReader be created
+          and does it have the correct defaults?
+        """
+        r = NetCDFReader(synthetic_test_file["path"])
+        assert r.order_by == "group"
+        assert r.exclude_groups == []
+
     def test_read_dataset(self, synthetic_test_file):
         """
           Can a netCDF4 file be opened correctly?
         """
-        ds = read_dataset(synthetic_test_file["path"])
+        ds = NetCDFReader.read_dataset(synthetic_test_file["path"])
+        assert ds.data_model == "NETCDF4"
 
     def test_walk_groups(self, synthetic_test_file):
         """
           Are groups correctly identified and appear
           in the expected order?
         """
-        ds = read_dataset(synthetic_test_file["path"])
-        groupnames = [group.path for group in walk_groups(ds)]
+        r = NetCDFReader(synthetic_test_file["path"])
+        r.process()
+        groupnames = [group.path for group in walk_groups(r.ds)]
         for idx in range(len(groupnames)):
             assert groupnames[idx] == synthetic_test_file["groups"][idx]
 
@@ -50,10 +61,9 @@ class TestGroups:
           Are group paths excluded from the search
           correctly omitted?
         """
-        ds = read_dataset(synthetic_test_file["path"])
         exclusion = "/top01/nest_b"
-        exclude_groups.append(exclusion)
-        groupnames = [group.path for group in walk_groups(ds)]
+        r = NetCDFReader(synthetic_test_file["path"], exclude=exclusion)
+        groupnames = [group.path for group in walk_groups(r.ds)]
         filtered_groups = [group for group in synthetic_test_file["groups"] if not group.startswith(exclusion)]
         for idx in range(len(groupnames)):
             assert groupnames[idx] == filtered_groups[idx]
