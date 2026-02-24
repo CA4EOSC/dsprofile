@@ -4,12 +4,12 @@ import pytest
 
 from dsprofile.lib.netcdf import (
     NetCDFReader,
-    exclude_groups,
     walk_groups
 )
 
 
-TEST_DATA_PATH = os.getenv("NCDF_TEST_DATA_PATH", "tests/data")
+TEST_DATA_PATH = os.getenv("DSPROFILE_TEST_DATA_PATH", "tests/data")
+
 
 @pytest.fixture
 def synthetic_test_file():
@@ -28,7 +28,7 @@ def synthetic_test_file():
     }
 
 
-class TestGroups:
+class TestNetCDF:
     def test_reader_instance(self, synthetic_test_file):
         """
           Can an instance of the NetCDFReader be created

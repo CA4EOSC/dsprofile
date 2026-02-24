@@ -1,9 +1,8 @@
 import pathlib
+import sys
 
-from dsprofile.lib import (
-    reader_type_map,
-    Reader
-)
+from dsprofile.lib import Reader
+
 
 class ShapefileReader(Reader):
 

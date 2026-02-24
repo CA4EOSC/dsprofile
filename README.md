@@ -1,11 +1,9 @@
-# NetCDF Metadata
+# Dataset Profile
 
 ## Overview
 
-A utility to describe the structure of NetCDF4 datasets.
-
-Reads a NetCDF4 file and reports the group structure and information
-about any dimensions, variables, and attributes that are defined.
+A utility to describe the structure of datasets in netCDF, GeoTiff,
+and ESRI Shapefile format.
 
 ## Installation
 
@@ -19,7 +17,7 @@ The optional test suite may be installed and run with:
 
 ```bash
 $ python -m pip install .[test]
-$ pytest --cov=ncmetadata tests
+$ pytest --cov=dsprofile tests
 ```
 
 ## Usage
@@ -40,6 +38,9 @@ Dataset formats:
 ```
 
 ## NetCDF Options
+
+Reads a netCDF4 file and reports the group structure and information
+about any dimensions, variables, and attributes that are defined.
 
 ```bash
 usage: dsprofile netcdf [-h] [-o {category,group}] [-e <group0>,<group1>,...] [-m] [-d] filename

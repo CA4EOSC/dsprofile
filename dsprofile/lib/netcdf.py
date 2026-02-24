@@ -3,13 +3,11 @@
 #)
 import pathlib
 import sys
+import weakref
 
 from collections.abc import Sequence
 
-from dsprofile.lib import (
-    reader_type_map,
-    Reader
-)
+from dsprofile.lib import Reader
 
 import netCDF4 as nc
 
@@ -54,6 +52,7 @@ class NetCDFReader(Reader):
 
     def __init__(self, filename, order_by="group", exclude=None):
         self.ds = self.__class__.read_dataset(filename)
+        self._finalizer = weakref.finalize(self, self.finalize_close, self.ds)
         self.order_by = order_by
         # Note that the order is significant here
         # a str is a Sequence type
@@ -84,10 +83,19 @@ class NetCDFReader(Reader):
         if ds.data_model != "NETCDF4":
             print(f"File '{filename}' has format '{ds.data_model}', "
                   f"not 'NETCDF4' as required", file=sys.stderr)
+            ds.close()
             sys.exit(1)
 
         return ds
 
+    @staticmethod
+    def finalize_close(ncdf):
+        if isinstance(ncdf, nc.Dataset) and ncdf.isopen():
+            ncdf.close()
+
+    def close(self):
+        if self._finalizer.alive:
+            self._finalizer()
 
     def gather_by_group(self):
         """
