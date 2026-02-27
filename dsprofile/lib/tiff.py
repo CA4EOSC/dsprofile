@@ -9,7 +9,7 @@ import rasterio as rio
 
 class GeoTIFFReader(Reader):
 
-    format = "tiff"
+    format = "geotiff"
 
     def __init__(self, filename):
         super().__init__()
@@ -64,21 +64,15 @@ class GeoTIFFReader(Reader):
                 "right": self.tif.bounds.right,
                 "top": self.tif.bounds.top
             },
-            "units": self.tif.units
+            "units": self.tif.crs.linear_units,
+            "lin_step": self.tif.res
         }
         auth = self.tif.crs.to_authority()
         if auth is not None:
             if len(auth) == 2:
                 registry, code = auth
-                output["proj"] = f"{registry}:{code}"
+                output["crs"] = f"{registry}:{code}"
             elif len(auth) == 1:
-                output["proj"] = str(auth)
+                output["crs"] = str(auth)
 
         return output
-
-
-if __name__ == "__main__":
-    f = "/home/paul/caeosc/data/california/neon-sjer-site/2013/lidar/SJER_lidarDSM.tif"
-    r = GeoTIFFReader(f)
-    p = r.process()
-    breakpoint()

@@ -36,7 +36,7 @@ class TestGeoTIFF:
           with the expected default attributes?
         """
         r = GeoTIFFReader(geotiff_test_file["path"])
-        assert r.format == "tiff"
+        assert r.format == GeoTIFFReader.format
 
     def test_dataset_fileops(self, geotiff_test_file):
         """

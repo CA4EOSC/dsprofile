@@ -23,7 +23,7 @@ $ pytest --cov=dsprofile tests
 ## Usage
 
 ```bash
-usage: dsprofile [-h] {netcdf,tiff,shape} ...
+usage: dsprofile [-h] {netcdf,geotiff,shape} ...
 
 Describes datasets in a variety of formats
 
@@ -31,9 +31,9 @@ options:
   -h, --help           show this help message and exit
 
 Dataset formats:
-  {netcdf,tiff,shape}
+  {netcdf,geotiff,shape}
     netcdf             Extracts metadata from netCDF4 files
-    tiff               Extracts metadata from GeoTIFF files
+    geotiff            Extracts metadata from GeoTIFF files
     shape              Extracts metadata from ESRI Shape files
 ```
 
@@ -80,4 +80,41 @@ $ dsprofile netcdf test.nc
 
 ## GeoTiff Options
 
+```bash
+usage: dsprofile geotiff [-h] [-m] [-d] filename
+
+positional arguments:
+  filename
+
+options:
+  -h, --help           show this help message and exit
+  -m, --omit-metadata  Output only GeoTIFF file contents, not file metadata
+  -d, --omit-digest    Do not include a hash digest in file metadata
+```
+
 ## ESRI Shapefile Options
+
+```bash
+usage: dsprofile shape [-h] [-m] [-d] filename
+
+positional arguments:
+  filename
+
+options:
+  -h, --help           show this help message and exit
+  -m, --omit-metadata  Output only Shape file contents, not file metadata
+  -d, --omit-digest    Do not include a hash digest in file metadata
+```
+
+A Shapefile may be read by opening any of its components, for example...
+
+```bash
+$ dsprofile shape shapefile.shp
+```
+...is equivalent to...
+
+```bash
+$ dsprofile shape shapefile.dbf
+```
+Note however that where a hex digest of a hash is included in the output,
+this will refer only to file provided as a command-line argument.

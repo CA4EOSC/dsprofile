@@ -192,10 +192,3 @@ class NetCDFReader(Reader):
         ctor_kwargs = {}
 
         return ctor_args, ctor_kwargs
-
-
-if __name__ == "__main__":
-    from pprint import pprint
-    r = NetCDFReader("tests/data/test.nc", "group", [])
-    pprint(r.process())
-    breakpoint()

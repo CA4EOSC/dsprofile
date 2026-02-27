@@ -23,8 +23,9 @@ setup(
     install_requires = [
         "setuptools==68.1.2",  # earthpy uses pkg_resources
         "netCDF4",
-        "earthpy",  # Includes GeoPandas, rasterio
-        "fiona"
+        "earthpy",             # Includes GeoPandas, rasterio
+        "fiona",               # ESRI Shapefile support
+        "pyproj"               # CRS parsing
     ],
     extras_require = {
         "dev": dev_requires,

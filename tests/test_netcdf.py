@@ -35,6 +35,7 @@ class TestNetCDF:
           and does it have the correct defaults?
         """
         r = NetCDFReader(synthetic_test_file["path"])
+        assert r.format == NetCDFReader.format
         assert r.order_by == "group"
         assert r.exclude_groups == []
 
