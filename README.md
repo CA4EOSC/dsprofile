@@ -1,3 +1,5 @@
+![ci-workflow](https://github.com/eScienceLab/ncmetadata/workflows/CI/badge.svg)
+
 # Dataset Profile
 
 ## Overview
