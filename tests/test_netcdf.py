@@ -8,13 +8,18 @@ from dsprofile.lib.netcdf import (
 )
 
 
-TEST_DATA_PATH = os.getenv("DSPROFILE_TEST_DATA_PATH", "tests/data")
+TEST_DATA_PATH = os.getenv("DSPROFILE_TEST_DATA_PATH")
 
 
 @pytest.fixture
-def synthetic_test_file():
+def synthetic_test_file(request):
+    if TEST_DATA_PATH:
+        test_dir = TEST_DATA_PATH
+    else:
+        base_dir = os.path.dirname(request.module.__file__)
+        test_dir = os.path.join(base_dir, "data")
     return {
-        "path": os.path.join(TEST_DATA_PATH, "test.nc"),
+        "path": os.path.join(test_dir, "test.nc"),
         "groups": ['/top01/nest_a/nest_a_01',
                    '/top01/nest_a/nest_a_02',
                    '/top01/nest_a',

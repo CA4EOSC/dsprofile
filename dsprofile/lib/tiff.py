@@ -5,15 +5,23 @@ import weakref
 from dsprofile.lib import Reader
 
 import rasterio as rio
+from rasterio.errors import RasterioIOError
 
 
 class GeoTIFFReader(Reader):
+    """
+      A Reader instance to process GeoTiff format data.
+    """
 
     format = "geotiff"
 
     def __init__(self, filename):
         super().__init__()
-        self.tif = rio.open(filename, 'r')
+        try:
+            self.tif = rio.open(filename, 'r')
+        except RasterioIOError as e:
+            raise ValueError(f"Unable to read dataset: {e}")
+
         self._finalizer = weakref.finalize(self, self.finalize_close, self.tif)
 
     @staticmethod

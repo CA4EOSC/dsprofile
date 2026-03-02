@@ -1,35 +1,25 @@
+"""
+  General (ie. not type-specific) utility functions used
+  by the dsprofile framework and readers.
+"""
 import datetime
 import os
 import sys
 
 from importlib.metadata import version
 
-import netCDF4 as nc
 
-
-def read_dataset(filename):
+def make_file_profile(ctx) -> dict:
     """
-      Handle OSError, PermissionError, FileNotFoundError neatly
-      Inform neatly for non-netCDF4 files
-      Allow all other exceptions to raise unhandled
+      Returns a summary of the file used as a command-line argument
+      and useful metadata about the execution environment.
     """
-
     try:
-        ds = nc.Dataset(filename, 'r')
-    except (OSError, PermissionError, FileNotFoundError) as e:
-        print(f"{e.strerror} for file '{filename}'", file=sys.stderr)
-        sys.exit(1)
-
-    if ds.data_model != "NETCDF4":
-        print(f"File '{filename}' has format '{ds.data_model}', "
-              f"not 'NETCDF4' as required", file=sys.stderr)
-        sys.exit(1)
-
-    return ds
-
-
-def make_file_profile(ctx):
-    try:
+        """
+          Note that where "--omit-metadata" is not provided, this operation
+          detects ENOENT and EPERM files *before* any type-specific
+          constructor in Reader types.
+        """
         stat = os.stat(ctx.filename)
     except (OSError, PermissionError, FileNotFoundError) as e:
         print(f"{e.strerror} for file '{ctx.filename}'", file=sys.stderr)

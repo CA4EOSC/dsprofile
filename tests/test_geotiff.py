@@ -6,13 +6,18 @@ import rasterio as rio
 from dsprofile.lib.tiff import GeoTIFFReader
 
 
-TEST_DATA_PATH = os.getenv("DSPROFILE_TEST_DATA_PATH", "tests/data")
+TEST_DATA_PATH = os.getenv("DSPROFILE_TEST_DATA_PATH")
 
 
 @pytest.fixture
-def geotiff_test_file():
+def geotiff_test_file(request):
+    if TEST_DATA_PATH:
+        test_dir = TEST_DATA_PATH
+    else:
+        base_dir = os.path.dirname(request.module.__file__)
+        test_dir = os.path.join(base_dir, "data")
     return {
-        "path": os.path.join(TEST_DATA_PATH, "GeogToWGS84GeoKey5.tif"),
+        "path": os.path.join(test_dir, "GeogToWGS84GeoKey5.tif"),
         "meta": {
             "shape": {
                 "width": 101,

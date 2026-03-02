@@ -12,14 +12,21 @@ from dsprofile.util import make_file_profile
 
 
 def parse_args(argv):
+    """
+      Build an argparse environment for the package and any defined
+      Reader subclasses.
+      Note that each Reader subtype must implement cls.build_subparser
+      to create any type-specific cli arguments it requires.
+    """
     parser = argparse.ArgumentParser(
         prog="dsprofile",
         description="Describes datasets in a variety of formats",
-        epilog="TODO: attribution/repo/docs"
+        epilog="For more information, see github.com/eScienceLab/dsprofile"
     )
 
     sp = parser.add_subparsers(title="Dataset formats",
                                dest="command")
+    # Delegate per-type subparser to each defined sub-type...
     for cls in reader_type_map.values():
         cls.build_subparser(sp)
 
@@ -37,7 +44,6 @@ def handle_args(args):
         output["metadata"] = make_file_profile(args)
 
     inst = make_reader(args)
-    #output["content"] = process_file(args.filename, args.order_by, exclude)
     output["content"] = inst.process()
     print(json.dumps(output, indent=2))
 
@@ -45,7 +51,6 @@ def handle_args(args):
 def main():
     args = parse_args(sys.argv)
     handle_args(args)
-    #reader_type_map[args.command].handle_args(args)
     sys.exit(0)
 
 

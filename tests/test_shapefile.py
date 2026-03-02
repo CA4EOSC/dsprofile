@@ -7,13 +7,18 @@ import numpy as np
 from dsprofile.lib import ShapefileReader
 
 
-TEST_DATA_PATH = os.getenv("DSPROFILE_TEST_DATA_PATH", "tests/data")
+TEST_DATA_PATH = os.getenv("DSPROFILE_TEST_DATA_PATH")
 
 
 @pytest.fixture
-def shape_test_file():
+def shape_test_file(request):
+    if TEST_DATA_PATH:
+        test_dir = TEST_DATA_PATH
+    else:
+        base_dir = os.path.dirname(request.module.__file__)
+        test_dir = os.path.join(base_dir, "data")
     return {
-        "path": os.path.join(TEST_DATA_PATH, "SJER_crop2.shp"),
+        "path": os.path.join(test_dir, "SJER_crop2.shp"),
         "meta": {
             "bounds": [
               255209.5107915717,

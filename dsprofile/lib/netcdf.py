@@ -1,6 +1,3 @@
-#from dsprofile.util import (
-#    read_dataset
-#)
 import pathlib
 import sys
 import weakref
@@ -47,6 +44,12 @@ def walk_groups(ds, order="ordered"):
 
 
 class NetCDFReader(Reader):
+    """
+      Defines a reader type for NetCDF4-based datasets.
+      Note that the underlying library may include support
+      for other (and non-HDF based) NetCDF formats, but this assumes
+      the availability of NetCDF4 primitives.
+    """
 
     format = "netcdf"
 
@@ -62,8 +65,7 @@ class NetCDFReader(Reader):
             self.exclude_groups = [exclude]
         elif issubclass(type(exclude), Sequence):
             self.exclude_groups = exclude
-        # TODO: Questionable...
-        global exclude_groups
+        global exclude_groups  # TODO: Questionable...
         exclude_groups = self.exclude_groups
 
     @staticmethod
@@ -90,6 +92,11 @@ class NetCDFReader(Reader):
 
     @staticmethod
     def finalize_close(ncdf):
+        """
+          An out-of-scope handler (usually) invoked by weakref.finalize
+          which should ensure that any resources acquired by this
+          instance are correctly returned before GC.
+        """
         if isinstance(ncdf, nc.Dataset) and ncdf.isopen():
             ncdf.close()
 
@@ -140,7 +147,6 @@ class NetCDFReader(Reader):
             dimensions[group.path] = {d.name: {"size": d.size} for d in group.dimensions.values()}
 
         return dimensions
-
 
     def describe_variables(self):
         variables = {}

@@ -18,7 +18,7 @@ test_requires = [
 
 setup(
     name = "dsprofile",
-    version = "0.1.0",
+    version = "0.2.0",
     packages = find_packages(include=["dsprofile", "dsprofile.*"]),
     install_requires = [
         "setuptools==68.1.2",  # earthpy uses pkg_resources

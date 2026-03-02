@@ -9,6 +9,9 @@ from dsprofile.lib import Reader
 
 
 class ShapefileReader(Reader):
+    """
+      A Reader type for ESRI Shapefile datasets
+    """
 
     format = "shape"
 
@@ -83,7 +86,7 @@ class ShapefileReader(Reader):
     @staticmethod
     def read_dataset(filename):
         try:
-            shp = fiona.open(filename)
+            shp = fiona.open(filename, 'r')
         except fiona.errors.DriverError as e:
             print(f"Unable to read '{filename}': {e}", file=sys.stderr)
             sys.exit(1)
