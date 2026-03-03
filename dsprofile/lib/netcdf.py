@@ -4,43 +4,9 @@ import weakref
 
 from collections.abc import Sequence
 
-from dsprofile.lib import Reader
+from dsprofile.lib.reader import Reader
 
 import netCDF4 as nc
-
-
-exclude_groups = []
-
-
-def walk_groups_breadth_first(ds):
-    yield ds.groups.values()
-    for group in ds.groups.values():
-        yield from walk_groups_breadth_first(group)
-
-
-def walk_groups_depth_first(ds):
-    for group in ds.groups.values():
-        yield from walk_groups_depth_first(group)
-    yield ds.groups.values()
-
-
-def walk_groups_ordered(ds):
-    for group in ds.groups.values():
-        if group.path in exclude_groups:
-            continue
-        yield from walk_groups_ordered(group)
-    yield ds
-
-
-walk_func_map = {
-    "breadth": walk_groups_breadth_first,
-    "depth": walk_groups_depth_first,
-    "ordered": walk_groups_ordered
-}
-
-
-def walk_groups(ds, order="ordered"):
-    return walk_func_map[order](ds)
 
 
 class NetCDFReader(Reader):
@@ -58,15 +24,13 @@ class NetCDFReader(Reader):
         self._finalizer = weakref.finalize(self, self.finalize_close, self.ds)
         self.order_by = order_by
         # Note that the order is significant here
-        # a str is a Sequence type
+        # as str is a Sequence type
         if not exclude:
             self.exclude_groups = []
         elif isinstance(exclude, str):
             self.exclude_groups = [exclude]
         elif issubclass(type(exclude), Sequence):
             self.exclude_groups = exclude
-        global exclude_groups  # TODO: Questionable...
-        exclude_groups = self.exclude_groups
 
     @staticmethod
     def read_dataset(filename):
@@ -104,6 +68,32 @@ class NetCDFReader(Reader):
         if self._finalizer.alive:
             self._finalizer()
 
+    def walk_groups_breadth_first(self, ds=None):
+        if not ds:
+            ds = self.ds
+        yield (g for g in ds.groups.values() if g.path not in self.exclude_groups)
+        for group in ds.groups.values():
+            if group.path in self.exclude_groups:
+                continue
+            yield from self.walk_groups_breadth_first(group)
+
+    def walk_groups_depth_first(self, ds=None):
+        if not ds:
+            ds = self.ds
+        for group in ds.groups.values():
+            if group.path in self.exclude_groups:
+                continue
+            yield from self.walk_groups_depth_first(group)
+        yield (g for g in ds.groups.values() if g.path not in self.exclude_groups)
+
+    walk_func_map = {
+        "breadth": walk_groups_breadth_first,
+        "depth": walk_groups_depth_first
+    }
+
+    def walk_groups(self, ds=None, order="breadth"):
+        return self.walk_func_map[order](self, ds)
+
     def gather_by_group(self):
         """
           A categorisation of dimensions, variables, and
@@ -113,13 +103,19 @@ class NetCDFReader(Reader):
         dims = self.describe_dimensions()
         ncvars = self.describe_variables()
         attrs = self.describe_attributes()
-        by_group = {}
-        for group in walk_groups(self.ds):
-            by_group[group.path] = {
-                "dimensions": dims[group.path],
-                "variables": ncvars[group.path],
-                "attributes": attrs[group.path]
+        by_group = {"/": {
+            "dimensions": dims["/"],
+            "variables": ncvars["/"],
+            "attributes": attrs["/"]
             }
+        }
+        for groups in self.walk_groups():
+            for group in groups:
+                by_group[group.path] = {
+                    "dimensions": dims[group.path],
+                    "variables": ncvars[group.path],
+                    "attributes": attrs[group.path]
+                }
 
         return by_group
 
@@ -143,26 +139,37 @@ class NetCDFReader(Reader):
     def describe_dimensions(self):
         dimensions = {}
 
-        for group in walk_groups(self.ds):
-            dimensions[group.path] = {d.name: {"size": d.size} for d in group.dimensions.values()}
+        dimensions['/'] = {d.name: {"size": d.size} for d in self.ds.dimensions.values()}
+        for groups in self.walk_groups():
+            for group in groups:
+                dimensions[group.path] = {d.name: {"size": d.size} for d in group.dimensions.values()}
 
         return dimensions
 
     def describe_variables(self):
         variables = {}
-        for group in walk_groups(self.ds):
-            variables[group.path] = {v.name: {"dtype": v.dtype.name,
-                                              "dimensions": v.dimensions,
-                                              "fill_value": str(v.get_fill_value())}
-                                     for v in group.variables.values()}
+        variables['/'] = {v.name: {"dtype": v.dtype.name,
+                                   "dimensions": v.dimensions,
+                                   "fill_value": str(v.get_fill_value())}
+                                   for v in self.ds.variables.values()}
+        for groups in self.walk_groups():
+            for group in groups:
+                variables[group.path] = {v.name: {"dtype": v.dtype.name,
+                                         "dimensions": v.dimensions,
+                                         "fill_value": str(v.get_fill_value())}
+                                         for v in group.variables.values()}
         return variables
 
     def describe_attributes(self):
         attrs = {}
-        for group in walk_groups(self.ds):
-            attrs[group.path] = {"group": [a for a in group.ncattrs()],
-                                 "vars": {v.name: [a for a in v.ncattrs()] for v in group.variables.values()}
-                                }
+        attrs['/'] = {"group": [a for a in self.ds.ncattrs()],
+                      "vars": {v.name: [a for a in v.ncattrs()] for v in self.ds.variables.values()}
+                     }
+        for groups in self.walk_groups():
+            for group in groups:
+                attrs[group.path] = {"group": [a for a in group.ncattrs()],
+                                     "vars": {v.name: [a for a in v.ncattrs()] for v in group.variables.values()}
+                                    }
         return attrs
 
     def process(self):

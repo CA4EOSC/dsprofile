@@ -29,7 +29,7 @@ class Reader(ABC):
         reader_type = getattr(cls, keyattr, None)
         if not reader_type or not isinstance(reader_type, str):
             raise NotImplementedError(f"Reader subclass {cls.__qualname__} "
-                                      f"does not define a {reader_type} key")
+                                      f"does not define a {keyattr} key")
         reader_type_map[reader_type] = cls
 
     @classmethod

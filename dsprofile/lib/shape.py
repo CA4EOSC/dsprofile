@@ -5,7 +5,7 @@ import weakref
 import fiona
 from fiona import Collection
 
-from dsprofile.lib import Reader
+from dsprofile.lib.reader import Reader
 
 
 class ShapefileReader(Reader):

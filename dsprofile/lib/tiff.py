@@ -2,7 +2,7 @@ import pathlib
 import sys
 import weakref
 
-from dsprofile.lib import Reader
+from dsprofile.lib.reader import Reader
 
 import rasterio as rio
 from rasterio.errors import RasterioIOError
@@ -20,7 +20,8 @@ class GeoTIFFReader(Reader):
         try:
             self.tif = rio.open(filename, 'r')
         except RasterioIOError as e:
-            raise ValueError(f"Unable to read dataset: {e}")
+            print(f"Unable to read dataset '{filename}': {e}", file=sys.stderr)
+            sys.exit(1)
 
         self._finalizer = weakref.finalize(self, self.finalize_close, self.tif)
 
