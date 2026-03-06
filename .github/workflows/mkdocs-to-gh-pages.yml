@@ -23,4 +23,4 @@ jobs:
       - run: pip install mkdocs-autorefs
       - run: pip install mkdocs-material
       - run: pip install mkdocstrings[python]
-      - run: mkdocs gh-deploy
+      - run: mkdocs gh-deploy --force
