@@ -11,16 +11,26 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout workflow trigger ref
+        uses: actions/checkout@v4
+
       - name: Configure Git Credentials
         run: |
           git config --local user.name ${{ secrets.PAGES_USER }}
           git config --local user.email ${{ secrets.PAGES_EMAIL }}
-      - uses: actions/setup-python@v5
+
+      - name: Install Python
+        uses: actions/setup-python@v5
         with:
           python-version: 3.x
-      - run: pip install mkdocs
-      - run: pip install mkdocs-autorefs
-      - run: pip install mkdocs-material
-      - run: pip install mkdocstrings[python]
-      - run: mkdocs gh-deploy --force
+
+      - name: Install mkdocs and plugins
+        run: |      
+          pip install mkdocs
+          pip install mkdocs-autorefs
+          pip install mkdocs-material
+          pip install mkdocstrings[python]
+          pip install mkdocs-git-revision-date-localized-plugin
+
+      - name: Build and push docs
+        run: mkdocs gh-deploy --force
