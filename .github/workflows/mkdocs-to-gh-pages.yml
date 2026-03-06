@@ -1,0 +1,27 @@
+name: mkdocs-to-gh-pages
+on:
+  push:
+    branches:
+      - 4-document-procedure-for-new-reader-type-creation
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure Git Credentials
+        run: |
+          git config --local user.name ${{ secrets.PAGE_USER }}
+          git config --local user.email ${{ secrets.PAGE_EMAIL }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+        run: |
+          pip install mkdocs
+          pip install mkdocs-autorefs
+          pip install mkdocs-material
+          pip install mkdocstrings
+          mkdocs gh-deploy

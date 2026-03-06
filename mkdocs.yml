@@ -1,0 +1,42 @@
+site_name: dsprofile
+
+repo_url: https://github.com/eScienceLab/dsprofile
+repo_name: eScienceLab/dsprofile
+
+theme:
+  name: "material"
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to dark mode
+
+    - scheme: slate
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to light mode
+
+  features:
+    - navigation.footer
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - mkdocstrings
+  - autorefs:
+      resolve_closest: true
+
+markdown_extensions:
+  - attr_list
+  - admonition
+
+nav:
+  - Overview: index.md
+  - Command-line Interface: cli.md
+  - Reader class: reader.md
+  - Examples: examples.md

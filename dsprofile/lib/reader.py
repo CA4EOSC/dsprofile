@@ -49,8 +49,10 @@ class Reader(ABC):
           and keyword arguments required to create an instance of this
           type.
           The returned tuple must consist of two elements:
-            1. A list (or other sequence) of positional arguments
+
+            1. A list (or other `Sequence`) of positional arguments
             2. A dict with str keys containing keyword arguments
+
           These are subsequently passed to the type's constructor
           to create an instance.
         """

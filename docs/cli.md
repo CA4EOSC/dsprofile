@@ -1,26 +1,4 @@
-![ci-workflow](https://github.com/eScienceLab/dsprofile/workflows/CI/badge.svg)
-
-# Dataset Profile
-
-## Overview
-
-A utility to describe the structure of datasets in netCDF, GeoTiff,
-and ESRI Shapefile format.
-
-## Installation
-
-Build and install the package with...
-
-```
-$ python -m pip install .
-```
-
-The optional test suite may be installed and run with:
-
-```
-$ python -m pip install .[test]
-$ pytest --cov=dsprofile tests
-```
+# The `dsprofile` CLI
 
 ## Usage
 
@@ -38,6 +16,7 @@ Dataset formats:
     geotiff            Extracts metadata from GeoTIFF files
     shape              Extracts metadata from ESRI Shape files
 ```
+
 
 ## NetCDF Options
 
@@ -62,9 +41,9 @@ options:
 
 The `--order-by` option allows the resulting output to be arranged in one of two ways:
 
-    1. By `group` creates a listing of dimensions, variables, and attributes for
+  1. By `group` creates a listing of dimensions, variables, and attributes for
        each netCDF group within a file.
-    2. By `category` creates a listing of the properties of each group organised into
+  2. By `category` creates a listing of the properties of each group organised into
        separate examples for each category of dimension, variable, and attribute.
 
 The `--omit-digest` option prevents calculation of a SHA256 hash for the processed file.
@@ -118,5 +97,7 @@ $ dsprofile shape shapefile.shp
 ```
 $ dsprofile shape shapefile.dbf
 ```
-Note however that where a hex digest of a hash is included in the output,
-this will refer only to file provided as a command-line argument.
+!!! warning "Shapefile hex digest is for only the cli argument file"
+
+    Note that where a hex digest of a hash is included in the output
+    this will refer only to file provided as a command-line argument.
