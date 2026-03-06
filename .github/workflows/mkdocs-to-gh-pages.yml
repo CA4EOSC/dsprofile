@@ -14,8 +14,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Configure Git Credentials
         run: |
-          git config --local user.name ${{ secrets.PAGE_USER }}
-          git config --local user.email ${{ secrets.PAGE_EMAIL }}
+          git config --local user.name ${{ secrets.PAGES_USER }}
+          git config --local user.email ${{ secrets.PAGES_EMAIL }}
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
