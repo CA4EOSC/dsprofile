@@ -1,7 +1,7 @@
 site_name: dsprofile
 
-repo_url: https://github.com/eScienceLab/dsprofile
-repo_name: eScienceLab/dsprofile
+repo_url: https://github.com/CA4EOSC/dsprofile
+repo_name: CA4EOSC/dsprofile
 
 theme:
   name: "material"

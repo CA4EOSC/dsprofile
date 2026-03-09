@@ -1,4 +1,4 @@
-![ci-workflow](https://github.com/eScienceLab/dsprofile/workflows/CI/badge.svg)
+![ci-workflow](https://github.com/CA4EOSC/dsprofile/actions/workflows/ci.yml/badge.svg)
 
 # Dataset Profile
 
