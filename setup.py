@@ -17,17 +17,21 @@ test_requires = [
 
 
 setup(
-    name = "ncmetadata",
-    version = "0.1.0",
-    packages = find_packages(include=["ncmetadata", "ncmetadata.*"]),
+    name = "dsprofile",
+    version = "0.2.0",
+    packages = find_packages(include=["dsprofile", "dsprofile.*"]),
     install_requires = [
-        "netCDF4"
+        "setuptools==68.1.2",  # earthpy uses pkg_resources
+        "netCDF4",
+        "earthpy",             # Includes GeoPandas, rasterio
+        "fiona",               # ESRI Shapefile support
+        "pyproj"               # CRS parsing
     ],
     extras_require = {
         "dev": dev_requires,
         "test": test_requires
     },
     entry_points = {
-        "console_scripts": ["ncmetadata=ncmetadata.main:main"]
+        "console_scripts": ["dsprofile=dsprofile.main:main"]
     }
 )

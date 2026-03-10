@@ -1,11 +1,10 @@
-import os
 from packaging import version
-
-import pytest
 
 
 min_version_map = {
-    "netCDF4": version.parse("1.7.0")
+    "netCDF4": version.parse("1.7.0"),
+    "rasterio": version.parse("1.4.0"),
+    "fiona": version.parse("0.9.0")
 }
 
 
@@ -18,4 +17,3 @@ class TestSetup:
         for libname, semver in min_version_map.items():
             lib = importlib.import_module(libname)
             assert version.parse(lib.__version__) >= semver
-        
