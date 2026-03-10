@@ -1,4 +1,4 @@
-# The `dsprofile` CLI
+# The `dsprofile` Command
 
 ## Usage
 

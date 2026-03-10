@@ -21,7 +21,14 @@ theme:
         name: Switch to light mode
 
   features:
+    - navigation.indices
+    - navigation.indexes
+    #- navigation.sections
     - navigation.footer
+    - navigation.top
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.tracking
 
 extra_css:
   - stylesheets/extra.css
@@ -47,7 +54,18 @@ markdown_extensions:
   - pymdownx.superfences
 
 nav:
-  - Overview: index.md
-  - Command-line Interface: cli.md
-  - Reader class: reader.md
-  - Examples: examples.md
+  - Overview: 
+    - index.md
+    - Installation: install.md
+    - Command-line Reference: cli.md
+    - Examples:
+      - examples/index.md
+      - Advanced Installation: examples/advanced-install.md
+      - Configuring Output: examples/output-config.md
+  - Extending:
+    - extending/index.md
+    - Adding a Reader: extending/reader.md
+  - API Reference:
+    - reference/index.md
+    - The Reader class: reference/reader.md
+    - Utilities: reference/utils.md
