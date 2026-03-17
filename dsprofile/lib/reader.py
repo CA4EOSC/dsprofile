@@ -27,9 +27,9 @@ class Reader(ABC):
         super().__init_subclass__(**kwargs)
         keyattr = __class__.subclass_type_key
         reader_type = getattr(cls, keyattr, None)
-        if not reader_type or not isinstance(reader_type, str):
+        if not reader_type or not isinstance(reader_type, str) or ' ' in reader_type:
             raise NotImplementedError(f"Reader subclass {cls.__qualname__} "
-                                      f"does not define a {keyattr} key")
+                                      f"does not define a valid {keyattr} key")
         reader_type_map[reader_type] = cls
 
     @classmethod
