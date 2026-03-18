@@ -21,8 +21,13 @@ def parse_args(argv):
     parser = argparse.ArgumentParser(
         prog="dsprofile",
         description="Describes datasets in a variety of formats",
-        epilog="For more information, see github.com/eScienceLab/dsprofile"
+        epilog="For more information, see ca4eosc.github.io/dsprofile"
     )
+
+    parser.add_argument("-m", "--omit-metadata", action="store_true",
+                        help="Output only file contents, not file metadata")
+    parser.add_argument("-d", "--omit-digest", action="store_true",
+                        help="Do not include a hash digest in file metadata")
 
     sp = parser.add_subparsers(title="Dataset formats",
                                dest="command")

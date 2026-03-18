@@ -184,10 +184,6 @@ class NetCDFReader(Reader):
                             default="group", help="(default group)")
         parser.add_argument("-e", "--exclude-groups", metavar="<group0>,<group1>,...",
                             help="Exclude each of the named <group> arguments")
-        parser.add_argument("-m", "--omit-metadata", action="store_true",
-                            help="Output only netCDF file contents, not file metadata")
-        parser.add_argument("-d", "--omit-digest", action="store_true",
-                            help="Do not include a hash digest in file metadata")
         return parser
 
     @classmethod
