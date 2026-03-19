@@ -4,8 +4,9 @@
 
 ## Overview
 
-A utility to describe the structure of datasets in netCDF, GeoTiff,
-and ESRI Shapefile format.
+A utility to create profiles of geospatial datasets in a range of formats to assist FAIRification.
+
+For full documentation, please see [the DSprofile documentation](https://ca4eosc.github.io/dsprofile).
 
 ## Installation
 
@@ -25,27 +26,34 @@ $ pytest --cov=dsprofile tests
 ## Usage
 
 ```bash
-usage: dsprofile [-h] {netcdf,geotiff,shape} ...
+usage: dsprofile [-h] [-m] [-d] {netcdf,geotiff,shape,geopackage} ...
 
 Describes datasets in a variety of formats
 
 options:
-  -h, --help           show this help message and exit
+  -h, --help            show this help message and exit
+  -m, --omit-metadata   Output only file contents, not file metadata
+  -d, --omit-digest     Do not include a hash digest in file metadata
 
 Dataset formats:
-  {netcdf,geotiff,shape}
-    netcdf             Extracts metadata from netCDF4 files
-    geotiff            Extracts metadata from GeoTIFF files
-    shape              Extracts metadata from ESRI Shape files
+  {netcdf,geotiff,shape,geopackage}
+    netcdf              Extracts metadata from netCDF4 files
+    geotiff             Extracts metadata from GeoTIFF files
+    shape               Extracts metadata from ESRI Shape files
+    geopackage          Extracts metadata from GeoPackage files
+
+For more information, see ca4eosc.github.io/dsprofile
 ```
 
-## NetCDF Options
+## Reader-specific options
+
+### NetCDF Options
 
 Reads a netCDF4 file and reports the group structure and information
 about any dimensions, variables, and attributes that are defined.
 
 ```bash
-usage: dsprofile netcdf [-h] [-o {category,group}] [-e <group0>,<group1>,...] [-m] [-d] filename
+usage: dsprofile netcdf [-h] [-o {category,group}] [-e <group0>,<group1>,...] filename
 
 positional arguments:
   filename
@@ -56,8 +64,6 @@ options:
                         (default group)
   -e <group0>,<group1>,..., --exclude-groups <group0>,<group1>,...
                         Exclude each of the named <group> arguments
-  -m, --omit-metadata   Output only netCDF file contents, not file metadata
-  -d, --omit-digest     Do not include a hash digest in file metadata
 ```
 
 The `--order-by` option allows the resulting output to be arranged in one of two ways:
@@ -71,7 +77,7 @@ The `--omit-digest` option prevents calculation of a SHA256 hash for the process
 This may be desirable for very large files or test workflows to avoid the potentially
 time-consuming hashing operation.
 
-### NetCDF Example
+#### NetCDF Example
 
 For example, to report on the contents of the netCDF4 file `test.nc` using the default
 output options...
@@ -80,32 +86,28 @@ output options...
 $ dsprofile netcdf test.nc
 ```
 
-## GeoTiff Options
+### GeoTiff Options
 
 ```bash
-usage: dsprofile geotiff [-h] [-m] [-d] filename
+usage: dsprofile geotiff [-h] filename
 
 positional arguments:
   filename
 
 options:
   -h, --help           show this help message and exit
-  -m, --omit-metadata  Output only GeoTIFF file contents, not file metadata
-  -d, --omit-digest    Do not include a hash digest in file metadata
 ```
 
-## ESRI Shapefile Options
+### ESRI Shapefile Options
 
 ```bash
-usage: dsprofile shape [-h] [-m] [-d] filename
+usage: dsprofile shape [-h] filename
 
 positional arguments:
   filename
 
 options:
   -h, --help           show this help message and exit
-  -m, --omit-metadata  Output only Shape file contents, not file metadata
-  -d, --omit-digest    Do not include a hash digest in file metadata
 ```
 
 A Shapefile may be read by opening any of its components, for example...
@@ -120,3 +122,15 @@ $ dsprofile shape shapefile.dbf
 ```
 Note however that where a hex digest of a hash is included in the output,
 this will refer only to file provided as a command-line argument.
+
+### GeoPackage Options
+
+```bash
+usage: dsprofile geopackage [-h] filename
+
+positional arguments:
+  filename
+
+options:
+  -h, --help  show this help message and exit
+```

@@ -41,10 +41,14 @@ class GeoPackageReader(Reader):
         return ctor_args, ctor_kwargs
 
     def read_layers(self):
-        layers = {}
-        for layer in self.layers["name"]:
-            df = gpd.read_file(self.filename, layer=layer)
-            layers[layer] = {col_name: str(df[col_name].dtype) for col_name in df.columns}
+        layers = []
+        for idx, layer in self.layers.iterrows():
+            df = gpd.read_file(self.filename, layer=layer["name"])
+            layers.append({
+                "name": layer["name"],
+                "geometry_type": str(layer["geometry_type"]),
+                "variables": {col_name: str(df[col_name].dtype) for col_name in df.columns}
+            })
 
         return layers
 
