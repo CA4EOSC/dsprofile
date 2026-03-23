@@ -4,7 +4,8 @@ from packaging import version
 min_version_map = {
     "netCDF4": version.parse("1.7.0"),
     "rasterio": version.parse("1.4.0"),
-    "fiona": version.parse("0.9.0")
+    "fiona": version.parse("0.9.0"),
+    "geopandas": version.parse("1.1.0")
 }
 
 

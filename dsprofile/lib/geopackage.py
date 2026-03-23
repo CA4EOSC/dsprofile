@@ -1,9 +1,10 @@
 import pathlib
 import sys
+import warnings
 
 import geopandas as gpd
 
-from collections.abc import Sequence
+from io import BytesIO
 
 from dsprofile.lib.reader import Reader
 
@@ -18,6 +19,14 @@ class GeoPackageReader(Reader):
           and no weakref.finalize is required.
         """
         self.filename = filename
+        """
+          Suppress warnings due to "non conformant" filename
+          when reading input from a buffer
+        """
+        if isinstance(filename, BytesIO):
+            warnings.filterwarnings(module="pyogrio", action="ignore",
+                                    category=RuntimeWarning,
+                                    message=".*non conformant.*")
         self.layers = gpd.list_layers(filename)
 
     @classmethod
@@ -41,12 +50,18 @@ class GeoPackageReader(Reader):
         return ctor_args, ctor_kwargs
 
     def read_layers(self):
+        """
+          Describes the variables of each layer defined in the
+          GeoPackage.
+          The "geometry" key records the name of the dataframe column
+          containing geometrical constructs, or "None" if this is absent.
+        """
         layers = []
         for idx, layer in self.layers.iterrows():
             df = gpd.read_file(self.filename, layer=layer["name"])
             layers.append({
                 "name": layer["name"],
-                "geometry_type": str(layer["geometry_type"]),
+                "geometry": str(df.active_geometry_name) if hasattr(df, "active_geometry_name") else "None",
                 "variables": {col_name: str(df[col_name].dtype) for col_name in df.columns}
             })
 
@@ -54,10 +69,3 @@ class GeoPackageReader(Reader):
 
     def process(self):
         return {"layers": self.read_layers()}
-
-
-if __name__ == "__main__":
-    from pprint import pprint
-    gpr = GeoPackageReader("/mnt/xfr/bdnb.gpkg")
-    layers = gpr.process()
-    pprint(layers)

@@ -25,7 +25,8 @@ setup(
         "netCDF4",
         "earthpy",             # Includes GeoPandas, rasterio
         "fiona",               # ESRI Shapefile support
-        "pyproj"               # CRS parsing
+        "pyproj",              # CRS parsing
+        "shapely"              # Geometry constructs
     ],
     extras_require = {
         "dev": dev_requires,
