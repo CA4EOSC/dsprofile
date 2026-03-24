@@ -32,7 +32,7 @@ def make_names(count):
     return ["".join(chr(65 + d) for d in exp26(i)) for i in range(abs(count))]
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def geometry_geodataframe():
     """
       Generate a GeoPandas GeoDataFrame with geometry col containing
@@ -50,7 +50,7 @@ def geometry_geodataframe():
     return gpd.GeoDataFrame({"names": make_names(pcount)}, geometry=[Point(c) for c in lat_longs], crs=crs)
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def elevation_geodataframe():
     """
       Generate a GeoPandas GeoDataFrame containing a sequence
@@ -66,8 +66,8 @@ def elevation_geodataframe():
     return gpd.GeoDataFrame({"names": make_names(pcount), "Elevation": elevations})
 
 
-@pytest.fixture
-def multi_layer_tempfile(geometry_geodataframe, elevation_geodataframe, scope="module"):
+@pytest.fixture(scope="module")
+def multi_layer_tempfile(geometry_geodataframe, elevation_geodataframe):
     """
       Create a temporary file containing the geometry and elevation
       GeoDataframes as layers.
@@ -75,16 +75,17 @@ def multi_layer_tempfile(geometry_geodataframe, elevation_geodataframe, scope="m
       writing multiple layers to a BytesIO buffer (as in `single_layer_buf`
       below) so a temp file is required here.
     """
-    buf = tempfile.NamedTemporaryFile(suffix=".gpkg")
+    tmpfile = tempfile.NamedTemporaryFile(suffix=".gpkg")
 
-    geometry_geodataframe.to_file(buf.name, layer="Points", driver="GPKG")
-    elevation_geodataframe.to_file(buf.name, layer="Elevation", driver="GPKG")
+    geometry_geodataframe.to_file(tmpfile.name, layer="Points", driver="GPKG")
+    elevation_geodataframe.to_file(tmpfile.name, layer="Elevation", driver="GPKG")
 
-    yield buf
+    yield tmpfile
+    tmpfile.close()
 
 
-@pytest.fixture
-def single_layer_buf(geometry_geodataframe, scope="module"):
+@pytest.fixture(scope="module")
+def single_layer_buf(geometry_geodataframe):
     """
       Create a byte buffer containing a GeoDataFrame
     """
@@ -93,7 +94,9 @@ def single_layer_buf(geometry_geodataframe, scope="module"):
     # even a single layer or a driver-specific arbitrary
     # layer name is used
     geometry_geodataframe.to_file(buf, layer="Points", driver="GPKG")
+    buf.seek(0)
     yield buf
+    buf.close()
 
 
 var_name_map = {

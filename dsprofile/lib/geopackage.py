@@ -4,6 +4,7 @@ import warnings
 
 import geopandas as gpd
 
+from contextlib import nullcontext
 from io import BytesIO
 
 from dsprofile.lib.reader import Reader
@@ -23,11 +24,21 @@ class GeoPackageReader(Reader):
           Suppress warnings due to "non conformant" filename
           when reading input from a buffer
         """
-        if isinstance(filename, BytesIO):
-            warnings.filterwarnings(module="pyogrio", action="ignore",
-                                    category=RuntimeWarning,
-                                    message=".*non conformant.*")
-        self.layers = gpd.list_layers(filename)
+
+        with warnings.catch_warnings() if isinstance(filename, BytesIO) else nullcontext():
+            #  It's necessary to repeat this check here as
+            #  possible nullcontext results in permanent
+            #  change to global warnings
+            if isinstance(filename, BytesIO):
+                warnings.filterwarnings(module="pyogrio", action="ignore",
+                                        category=RuntimeWarning,
+                                        message=".*non conformant.*")
+            try:
+                self.layers = gpd.list_layers(filename)
+            # RuntimeError captures pyogrio.error's general `DataSourceError`
+            except (OSError, PermissionError, FileNotFoundError, RuntimeError) as e:
+                print(f"{e} for file '{filename}'", file=sys.stderr)
+                sys.exit(1)
 
     @classmethod
     def build_subparser(cls, sp):
@@ -58,7 +69,16 @@ class GeoPackageReader(Reader):
         """
         layers = []
         for idx, layer in self.layers.iterrows():
-            df = gpd.read_file(self.filename, layer=layer["name"])
+            try:
+                with warnings.catch_warnings() if isinstance(self.filename, BytesIO) else nullcontext():
+                    if isinstance(self.filename, BytesIO):
+                        warnings.filterwarnings(module="pyogrio", action="ignore",
+                                                category=RuntimeWarning,
+                                                message=".*non conformant.*")
+                    df = gpd.read_file(self.filename, layer=layer["name"])
+            except (OSError, PermissionError, FileNotFoundError, RuntimeError) as e:
+                print(f"{e} for file '{self.filename}'", file=sys.stderr)
+                sys.exit(1)
             layers.append({
                 "name": layer["name"],
                 "geometry": str(df.active_geometry_name) if hasattr(df, "active_geometry_name") else "None",

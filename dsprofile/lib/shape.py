@@ -37,10 +37,7 @@ class ShapefileReader(Reader):
         parser = sp.add_parser(cls.format,
                                help="Extracts metadata from ESRI Shape files")
         parser.add_argument("filename", type=pathlib.Path)
-        parser.add_argument("-m", "--omit-metadata", action="store_true",
-                            help="Output only Shape file contents, not file metadata")
-        parser.add_argument("-d", "--omit-digest", action="store_true",
-                            help="Do not include a hash digest in file metadata")
+
         return parser
 
     @classmethod
