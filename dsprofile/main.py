@@ -1,5 +1,6 @@
 import argparse
 import json
+import logging
 import sys
 
 
@@ -8,7 +9,8 @@ from dsprofile.lib import (
     make_reader
 )
 
-from dsprofile.util import make_file_profile
+from dsprofile.config import log_config
+from dsprofile.utils import make_file_profile
 
 
 def parse_args(argv):
@@ -23,6 +25,19 @@ def parse_args(argv):
         description="Describes datasets in a variety of formats",
         epilog="For more information, see github.com/eScienceLab/dsprofile"
     )
+
+    parser.add_argument("-m", "--omit-metadata",
+        action="store_true",
+        default=False,
+        help="Output only file contents, not file metadata")
+    parser.add_argument("-d", "--omit-digest",
+        action="store_true",
+        default=False,
+        help="Do not include a hash digest in file metadata")
+    parser.add_argument("-l", "--log-level",
+        metavar="<level>",
+        default="INFO",
+        help="Specify the minimal log level")
 
     sp = parser.add_subparsers(title="Dataset formats",
                                dest="command")
@@ -40,6 +55,14 @@ def parse_args(argv):
 
 def handle_args(args):
     output = {}
+
+    if hasattr(args, "log_level"):
+        if args.log_level not in logging.getLevelNamesMapping():
+            print(f"Invalig log level '{args.log_level}': Must be one of {','.join(logging.getLevelNamesMapping().keys())}",
+                file=sys.stderr)
+            sys.exit(1)
+        log_config(args.log_level)
+
     if hasattr(args, "omit_metadata") and not args.omit_metadata:
         output["metadata"] = make_file_profile(args)
 

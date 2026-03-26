@@ -3,7 +3,6 @@ from abc import (
     abstractmethod
 )
 
-
 reader_type_map = {}
 
 

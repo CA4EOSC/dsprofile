@@ -2,6 +2,7 @@ import pathlib
 import sys
 import weakref
 
+from dsprofile.utils import logged
 from dsprofile.lib.reader import Reader
 
 import rasterio as rio
@@ -42,10 +43,6 @@ class GeoTIFFReader(Reader):
         parser = sp.add_parser(cls.format,
                                help="Extracts metadata from GeoTIFF files")
         parser.add_argument("filename", type=pathlib.Path)
-        parser.add_argument("-m", "--omit-metadata", action="store_true",
-                            help="Output only GeoTIFF file contents, not file metadata")
-        parser.add_argument("-d", "--omit-digest", action="store_true",
-                            help="Do not include a hash digest in file metadata")
         return parser
 
     @classmethod
@@ -60,6 +57,7 @@ class GeoTIFFReader(Reader):
 
         return ctor_args, ctor_kwargs
 
+    @logged("ERROR")
     def process(self):
         output = {
             "shape": {
