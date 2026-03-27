@@ -52,7 +52,7 @@ class ShapefileReader(Reader):
 
         return ctor_args, ctor_kwargs
 
-    @logged("ERROR")
+    @logged
     def process(self):
         output = {
             "bounds": self.shp.bounds,

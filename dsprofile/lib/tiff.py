@@ -57,7 +57,7 @@ class GeoTIFFReader(Reader):
 
         return ctor_args, ctor_kwargs
 
-    @logged("ERROR")
+    @logged
     def process(self):
         output = {
             "shape": {

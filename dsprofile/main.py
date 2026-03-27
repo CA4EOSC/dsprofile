@@ -56,9 +56,15 @@ def parse_args(argv):
 def handle_args(args):
     output = {}
 
+    if not hasattr(args, "filename"):
+        print("A filename argument must be provided",
+              file=sys.stderr)
+        sys.exit(1)
+
     if hasattr(args, "log_level"):
         if args.log_level not in logging.getLevelNamesMapping():
-            print(f"Invalig log level '{args.log_level}': Must be one of {','.join(logging.getLevelNamesMapping().keys())}",
+            print(f"Invalid log level '{args.log_level}': ",
+                  f"Must be one of {','.join(logging.getLevelNamesMapping().keys())}",
                 file=sys.stderr)
             sys.exit(1)
         log_config(args.log_level)

@@ -25,18 +25,24 @@ $ pytest --cov=dsprofile tests
 ## Usage
 
 ```bash
-usage: dsprofile [-h] {netcdf,geotiff,shape} ...
+usage: dsprofile [-h] [-m] [-d] [-l <level>] {netcdf,geotiff,shape} ...
 
 Describes datasets in a variety of formats
 
 options:
-  -h, --help           show this help message and exit
+  -h, --help            show this help message and exit
+  -m, --omit-metadata   Output only file contents, not file metadata
+  -d, --omit-digest     Do not include a hash digest in file metadata
+  -l <level>, --log-level <level>
+                        Specify the minimal log level
 
 Dataset formats:
   {netcdf,geotiff,shape}
-    netcdf             Extracts metadata from netCDF4 files
-    geotiff            Extracts metadata from GeoTIFF files
-    shape              Extracts metadata from ESRI Shape files
+    netcdf              Extracts metadata from netCDF4 files
+    geotiff             Extracts metadata from GeoTIFF files
+    shape               Extracts metadata from ESRI Shape files
+
+For more information, see github.com/CA4EOSC/dsprofile
 ```
 
 ## NetCDF Options
