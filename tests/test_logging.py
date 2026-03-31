@@ -105,7 +105,7 @@ class TestLogging:
                                 stderr=subprocess.PIPE)
         with caplog.at_level(logging.DEBUG, logger=config.PROGNAME):
             _, serr = proc.communicate()
-        serr.startswith(b"Invalid log level 'NONEXIST'")
+        assert serr.startswith(b"Invalid log level 'NONEXIST'")
 
         for level in logging.getLevelNamesMapping().keys():
             assert level in serr.decode()

@@ -1,6 +1,5 @@
 import logging
 import os
-import sys
 
 
 from dotenv import load_dotenv
@@ -10,6 +9,7 @@ load_dotenv()
 PROGNAME = "dsprofile"
 
 USE_LOGGING = os.getenv("DSPROFILE_USE_LOGGING", "0") != "0"
+
 
 def log_config(log_level="INFO"):
     logger = logging.getLogger(PROGNAME)
@@ -22,6 +22,10 @@ def log_config(log_level="INFO"):
     else:
         handler = logging.NullHandler()
 
+    # Remove any existing handlers for this module
+    # This func *should* be invoked only once in
+    # main or tests, but handle misuse.
+    logger.handlers.clear()
     logger.addHandler(handler)
 
 

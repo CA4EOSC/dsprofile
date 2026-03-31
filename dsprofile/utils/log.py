@@ -3,7 +3,7 @@ import logging
 import types
 
 from dsprofile import config
-from dsprofile.lib import Reader
+from dsprofile.lib.reader import Reader
 
 logger = config.getLogger()
 
@@ -14,7 +14,7 @@ def logged(*dargs, time=False):
       to emit a log message when invoked.
 
       When applied with no arguments, this causes the wrapped
-      function to be preceeded by a INFO message which contains
+      function to be preceded by a INFO message which contains
       the classname and function name called.
 
       When applied with a single positional argument corresponding
@@ -25,7 +25,7 @@ def logged(*dargs, time=False):
       messages to be emitted, one before and one after the wrapped
       function call. The time difference between these indicates
       the duration of the call, making this useful for profiling
-      long-running operations on large datasets,
+      long-running operations on large datasets.
 
       See tests/test_logging.py for usage examples.
     """
@@ -41,8 +41,6 @@ def logged(*dargs, time=False):
         for darg in dargs:
             if not isinstance(darg, str):
                 continue
-            if darg not in level_map:
-                continue
             if num := level_map.get(darg.upper()):
                 level_num = num
     time_txt = " start" if time else ""
@@ -53,8 +51,10 @@ def logged(*dargs, time=False):
             if isinstance(self, Reader):
                 logger.log(level_num, f"{self.__class__.__qualname__}.{func.__name__}{time_txt}")
             if time:
-                ret = func(self, *args, **kwargs)
-                logger.log(level_num, f"{self.__class__.__qualname__}.{func.__name__} end")
+                try:
+                    ret = func(self, *args, **kwargs)
+                finally:
+                    logger.log(level_num, f"{self.__class__.__qualname__}.{func.__name__} end")
                 return ret
             else:
                 return func(self, *args, **kwargs)

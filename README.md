@@ -62,8 +62,6 @@ options:
                         (default group)
   -e <group0>,<group1>,..., --exclude-groups <group0>,<group1>,...
                         Exclude each of the named <group> arguments
-  -m, --omit-metadata   Output only netCDF file contents, not file metadata
-  -d, --omit-digest     Do not include a hash digest in file metadata
 ```
 
 The `--order-by` option allows the resulting output to be arranged in one of two ways:
@@ -96,8 +94,6 @@ positional arguments:
 
 options:
   -h, --help           show this help message and exit
-  -m, --omit-metadata  Output only GeoTIFF file contents, not file metadata
-  -d, --omit-digest    Do not include a hash digest in file metadata
 ```
 
 ## ESRI Shapefile Options
@@ -110,8 +106,6 @@ positional arguments:
 
 options:
   -h, --help           show this help message and exit
-  -m, --omit-metadata  Output only Shape file contents, not file metadata
-  -d, --omit-digest    Do not include a hash digest in file metadata
 ```
 
 A Shapefile may be read by opening any of its components, for example...

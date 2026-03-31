@@ -4,7 +4,6 @@ import weakref
 
 from collections.abc import Sequence
 
-from dsprofile import config
 from dsprofile.lib.reader import Reader
 from dsprofile.utils import logged
 

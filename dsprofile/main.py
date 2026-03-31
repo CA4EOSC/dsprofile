@@ -23,7 +23,7 @@ def parse_args(argv):
     parser = argparse.ArgumentParser(
         prog="dsprofile",
         description="Describes datasets in a variety of formats",
-        epilog="For more information, see github.com/eScienceLab/dsprofile"
+        epilog="For more information, see github.com/CA4EOSC/dsprofile"
     )
 
     parser.add_argument("-m", "--omit-metadata",
