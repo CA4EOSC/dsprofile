@@ -21,6 +21,7 @@ def log_config(log_level="INFO"):
         handler.setFormatter(formatter)
     else:
         handler = logging.NullHandler()
+        logger.propagate = False
 
     # Remove any existing handlers for this module
     # This func *should* be invoked only once in

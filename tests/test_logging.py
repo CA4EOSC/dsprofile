@@ -13,11 +13,13 @@ class DummyLoggingReader(Reader):
     format = "dummy"
 
     # Required abstract method
-    def handle_args(self):
+    @classmethod
+    def handle_args(cls, args):
         pass
 
     # Required abstract method
-    def build_subparser(self):
+    @classmethod
+    def build_subparser(cls, sp):
         pass
 
     def not_log_meth(self):
@@ -42,6 +44,7 @@ class DummyLoggingReader(Reader):
 
 @pytest.fixture(scope="module", autouse=True)
 def configure_logging():
+    config.USE_LOGGING = True
     config.log_config()
 
 
