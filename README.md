@@ -25,18 +25,24 @@ $ pytest --cov=dsprofile tests
 ## Usage
 
 ```bash
-usage: dsprofile [-h] {netcdf,geotiff,shape} ...
+usage: dsprofile [-h] [-m] [-d] [-l <level>] {netcdf,geotiff,shape} ...
 
 Describes datasets in a variety of formats
 
 options:
-  -h, --help           show this help message and exit
+  -h, --help            show this help message and exit
+  -m, --omit-metadata   Output only file contents, not file metadata
+  -d, --omit-digest     Do not include a hash digest in file metadata
+  -l <level>, --log-level <level>
+                        Specify the minimal log level
 
 Dataset formats:
   {netcdf,geotiff,shape}
-    netcdf             Extracts metadata from netCDF4 files
-    geotiff            Extracts metadata from GeoTIFF files
-    shape              Extracts metadata from ESRI Shape files
+    netcdf              Extracts metadata from netCDF4 files
+    geotiff             Extracts metadata from GeoTIFF files
+    shape               Extracts metadata from ESRI Shape files
+
+For more information, see github.com/CA4EOSC/dsprofile
 ```
 
 ## NetCDF Options
@@ -56,8 +62,6 @@ options:
                         (default group)
   -e <group0>,<group1>,..., --exclude-groups <group0>,<group1>,...
                         Exclude each of the named <group> arguments
-  -m, --omit-metadata   Output only netCDF file contents, not file metadata
-  -d, --omit-digest     Do not include a hash digest in file metadata
 ```
 
 The `--order-by` option allows the resulting output to be arranged in one of two ways:
@@ -90,8 +94,6 @@ positional arguments:
 
 options:
   -h, --help           show this help message and exit
-  -m, --omit-metadata  Output only GeoTIFF file contents, not file metadata
-  -d, --omit-digest    Do not include a hash digest in file metadata
 ```
 
 ## ESRI Shapefile Options
@@ -104,8 +106,6 @@ positional arguments:
 
 options:
   -h, --help           show this help message and exit
-  -m, --omit-metadata  Output only Shape file contents, not file metadata
-  -d, --omit-digest    Do not include a hash digest in file metadata
 ```
 
 A Shapefile may be read by opening any of its components, for example...

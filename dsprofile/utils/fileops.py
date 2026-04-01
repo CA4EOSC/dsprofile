@@ -6,6 +6,7 @@ import datetime
 import os
 import sys
 
+from dsprofile import config
 from importlib.metadata import version
 
 
@@ -29,7 +30,7 @@ def make_file_profile(ctx) -> dict:
         "env": {
             "created": datetime.datetime.strftime(datetime.datetime.now(), "%Y-%m-%d %H:%M:%S"),
             "command": " ".join([os.path.basename(sys.argv[0])] + sys.argv[1:]),
-            "version": version(__package__),
+            "version": version(config.PROGNAME),
             "os": os.uname().sysname
         },
         "file": {
