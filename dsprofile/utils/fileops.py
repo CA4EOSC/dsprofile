@@ -41,8 +41,13 @@ def make_file_profile(ctx) -> dict:
     if not ctx.omit_digest:
         from hashlib import sha256
         h = sha256()
-        with open(ctx.filename, 'rb') as fp:
-            h.update(fp.read())
+        try:
+            with open(ctx.filename, 'rb') as fp:
+                h.update(fp.read())
+        except (PermissionError, FileNotFoundError, OSError) as e:
+            print(str(e), file=sys.stderr)
+            sys.exit(1)
+
         origin["file"]["digest"] = h.hexdigest()
 
     return origin

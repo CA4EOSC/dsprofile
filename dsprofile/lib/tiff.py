@@ -43,6 +43,7 @@ class GeoTIFFReader(Reader):
         parser = sp.add_parser(cls.format,
                                help="Extracts metadata from GeoTIFF files")
         parser.add_argument("filename", type=pathlib.Path)
+
         return parser
 
     @classmethod

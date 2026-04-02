@@ -26,7 +26,8 @@ setup(
         "earthpy",             # Includes GeoPandas, rasterio
         "fiona",               # ESRI Shapefile support
         "pyproj",              # CRS parsing
-        "python-dotenv"
+        "python-dotenv",
+        "shapely"              # Geometry constructs
     ],
     extras_require = {
         "dev": dev_requires,

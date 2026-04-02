@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 import pytest
 
@@ -53,7 +54,7 @@ class TestNetCDF:
           in the expected order?
         """
         r = NetCDFReader(synthetic_test_file["path"])
-        r.process()
+        _ = r.process()
         groupnames = [group.path for groups in r.walk_groups(r.ds) for group in groups]
         for idx in range(len(groupnames)):
             assert groupnames[idx] == synthetic_test_file["groups"][idx]
@@ -69,3 +70,30 @@ class TestNetCDF:
         filtered_groups = [group for group in synthetic_test_file["groups"] if not group.startswith(exclusion)]
         for idx in range(len(groupnames)):
             assert groupnames[idx] == filtered_groups[idx]
+
+    def test_order_by(self, synthetic_test_file):
+        """
+          Do the orderings by `group` and by `category` produce
+          the expected output?
+        """
+        r_cat = NetCDFReader(synthetic_test_file["path"], order_by="category")
+        out = r_cat.process()
+        for category in ("dimensions", "variables", "attributes"):
+            assert category in out
+
+        r_grp = NetCDFReader(synthetic_test_file["path"], order_by="group")
+        out = r_grp.process()
+        for group in synthetic_test_file["groups"]:
+            assert group in out
+
+    def test_cli(self):
+        """
+          Can the command-line script be invoked using the
+          NetCDFReader's `format` attribute?
+        """
+        args = ["dsprofile", NetCDFReader.format, "-h"]
+        proc = subprocess.Popen(args, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        sout, serr = proc.communicate()
+        assert sout.startswith(b"usage")
+        assert len(serr) == 0    # Should be an empty bytes: b""
+        assert proc.returncode == 0

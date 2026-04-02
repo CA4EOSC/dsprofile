@@ -38,6 +38,7 @@ class ShapefileReader(Reader):
         parser = sp.add_parser(cls.format,
                                help="Extracts metadata from ESRI Shape files")
         parser.add_argument("filename", type=pathlib.Path)
+
         return parser
 
     @classmethod
