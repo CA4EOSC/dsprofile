@@ -26,7 +26,7 @@ $ pytest --cov=dsprofile tests
 ## Usage
 
 ```bash
-usage: dsprofile [-h] [-m] [-d] [-l <level>] {netcdf,geotiff,shape} ...
+usage: dsprofile [-h] [-m] [-d] [-l <level>] [-a <attribute>] {netcdf,geotiff,shape,geopackage} ...
 
 Describes datasets in a variety of formats
 
@@ -36,6 +36,8 @@ options:
   -d, --omit-digest     Do not include a hash digest in file metadata
   -l <level>, --log-level <level>
                         Specify the minimal log level
+  -a <attribute>, --context-attribute <attribute>
+                        Add {attribute: value} pair to metadata profile
 
 Dataset formats:
   {netcdf,geotiff,shape,geopackage}
