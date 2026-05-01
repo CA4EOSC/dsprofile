@@ -58,6 +58,7 @@ nav:
     - index.md
     - Installation: install.md
     - Command-line Reference: cli.md
+    - Context Attributes: context-attributes.md
     - Examples:
       - examples/index.md
       - Advanced Installation: examples/advanced-install.md

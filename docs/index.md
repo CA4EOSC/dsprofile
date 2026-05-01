@@ -2,5 +2,5 @@
 
 ## Overview
 
-`dsprofile` is a utility to describe the structure of datasets in a variety
-of storage formats.
+`dsprofile` is a utility to create profiles of geospatial datasets
+in a range of formats to assist FAIRification.
