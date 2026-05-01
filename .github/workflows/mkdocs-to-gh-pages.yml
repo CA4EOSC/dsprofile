@@ -1,0 +1,36 @@
+name: mkdocs-to-gh-pages
+on:
+  push:
+    branches:
+      - 9-allow-addition-of-arbitrary-attributes-to-metadata-profiles
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout workflow trigger ref
+        uses: actions/checkout@v4
+
+      - name: Configure Git Credentials
+        run: |
+          git config --local user.name ${{ secrets.PAGES_USER }}
+          git config --local user.email ${{ secrets.PAGES_EMAIL }}
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Install mkdocs and plugins
+        run: |      
+          pip install mkdocs
+          pip install mkdocs-autorefs
+          pip install mkdocs-material
+          pip install mkdocstrings[python]
+          pip install mkdocs-git-revision-date-localized-plugin
+
+      - name: Build and push docs
+        run: mkdocs gh-deploy --force
