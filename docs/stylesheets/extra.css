@@ -1,0 +1,12 @@
+[data-md-color-scheme="slate"] {
+  --md-hue: 210;
+}
+
+:root > * {
+  --md-footer-bg-color: #4a4958de;
+}
+
+.md-header {
+  background: #3333a6;
+  background: linear-gradient(90deg, rgba(31, 31, 126, 1) 0%, rgba(33, 86, 184, 1) 50%, rgba(125, 153, 219, 1) 100%);
+}

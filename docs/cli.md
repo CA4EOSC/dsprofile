@@ -1,31 +1,8 @@
-![ci-workflow](https://github.com/CA4EOSC/dsprofile/actions/workflows/ci.yml/badge.svg)
-
-# Dataset Profile
-
-## Overview
-
-A utility to create profiles of geospatial datasets in a range of formats to assist FAIRification.
-
-For full documentation, please see [the DSprofile documentation](https://ca4eosc.github.io/dsprofile).
-
-## Installation
-
-Build and install the package with...
-
-```
-$ python -m pip install .
-```
-
-The optional test suite may be installed and run with:
-
-```
-$ python -m pip install .[test]
-$ pytest --cov=dsprofile tests
-```
+# The `dsprofile` Command
 
 ## Usage
 
-```bash
+```
 usage: dsprofile [-h] [-m] [-d] [-l <level>] [-a <attribute>] {netcdf,geotiff,shape,geopackage} ...
 
 Describes datasets in a variety of formats
@@ -37,8 +14,8 @@ options:
   -l <level>, --log-level <level>
                         Specify the minimal log level
   -a <attribute>, --context-attribute <attribute>
-                        Add a JSON object containing {attribute: value} pair(s)
-                        to metadata profile
+                        Add a JSON object containing {attribute: value}
+                        pair(s) to metadata profile
 
 Dataset formats:
   {netcdf,geotiff,shape,geopackage}
@@ -46,17 +23,10 @@ Dataset formats:
     geotiff             Extracts metadata from GeoTIFF files
     shape               Extracts metadata from ESRI Shape files
     geopackage          Extracts metadata from GeoPackage files
-
-For more information, see ca4eosc.github.io/dsprofile
 ```
 
-The `--omit-digest` option prevents calculation of a SHA256 hash for the processed file.
-This may be desirable for very large files or test workflows to avoid the potentially
-time-consuming hashing operation.
 
-## Reader-specific options
-
-### NetCDF Options
+## NetCDF Options
 
 Reads a netCDF4 file and reports the group structure and information
 about any dimensions, variables, and attributes that are defined.
@@ -77,12 +47,16 @@ options:
 
 The `--order-by` option allows the resulting output to be arranged in one of two ways:
 
-    1. By `group` creates a listing of dimensions, variables, and attributes for
+  1. By `group` creates a listing of dimensions, variables, and attributes for
        each netCDF group within a file.
-    2. By `category` creates a listing of the properties of each group organised into
+  2. By `category` creates a listing of the properties of each group organised into
        separate examples for each category of dimension, variable, and attribute.
 
-#### NetCDF Example
+The `--omit-digest` option prevents calculation of a SHA256 hash for the processed file.
+This may be desirable for very large files or test workflows to avoid the potentially
+time-consuming hashing operation.
+
+### NetCDF Example
 
 For example, to report on the contents of the netCDF4 file `test.nc` using the default
 output options...
@@ -91,9 +65,9 @@ output options...
 $ dsprofile netcdf test.nc
 ```
 
-### GeoTiff Options
+## GeoTiff Options
 
-```bash
+```
 usage: dsprofile geotiff [-h] filename
 
 positional arguments:
@@ -103,9 +77,9 @@ options:
   -h, --help           show this help message and exit
 ```
 
-### ESRI Shapefile Options
+## ESRI Shapefile Options
 
-```bash
+```
 usage: dsprofile shape [-h] filename
 
 positional arguments:
@@ -125,17 +99,19 @@ $ dsprofile shape shapefile.shp
 ```
 $ dsprofile shape shapefile.dbf
 ```
-Note however that where a hex digest of a hash is included in the output,
-this will refer only to file provided as a command-line argument.
+!!! warning "Shapefile hex digest is for only the cli argument file"
 
-### GeoPackage Options
+    Note that where a hex digest of a hash is included in the output
+    this will refer only to file provided as a command-line argument.
 
-```bash
+## Geopackage Options
+
+```
 usage: dsprofile geopackage [-h] filename
 
 positional arguments:
   filename
 
 options:
-  -h, --help  show this help message and exit
+  -h, --help           show this help message and exit
 ```

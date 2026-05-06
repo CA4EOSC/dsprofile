@@ -3,6 +3,7 @@
   by the dsprofile framework and readers.
 """
 import datetime
+import json
 import os
 import sys
 
@@ -10,7 +11,7 @@ from dsprofile import config
 from importlib.metadata import version
 
 
-def make_file_profile(ctx) -> dict:
+def make_file_profile(ctx, context_attribute=None) -> dict:
     """
       Returns a summary of the file used as a command-line argument
       and useful metadata about the execution environment.
@@ -26,16 +27,25 @@ def make_file_profile(ctx) -> dict:
         print(f"{e.strerror} for file '{ctx.filename}'", file=sys.stderr)
         sys.exit(1)
 
+    # Context attributes may be numerous and are duplicated
+    # in the 'attributes' key, so should be removed from the
+    # 'command' before inclusion.
+
+    ctx_attr_options = ("-a", "--context-attribute")
+    for idx, arg in enumerate(sys.argv):
+        if arg.lower() in ctx_attr_options:
+            sys.argv[idx+1] = "<context attributes omitted...>"
+
     origin = {
         "env": {
-            "created": datetime.datetime.strftime(datetime.datetime.now(), "%Y-%m-%d %H:%M:%S"),
-            "command": " ".join([os.path.basename(sys.argv[0])] + sys.argv[1:]),
-            "version": version(config.PROGNAME),
-            "os": os.uname().sysname
+          "created": datetime.datetime.strftime(datetime.datetime.now(), "%Y-%m-%d %H:%M:%S"),
+          "command": " ".join([os.path.basename(sys.argv[0])] + sys.argv[1:]),
+          "version": version(config.PROGNAME),
+          "os": os.uname().sysname
         },
         "file": {
-            "name": str(ctx.filename),
-            "size": stat.st_size
+          "name": str(ctx.filename),
+          "size": stat.st_size
         }
     }
     if not ctx.omit_digest:
@@ -49,5 +59,14 @@ def make_file_profile(ctx) -> dict:
             sys.exit(1)
 
         origin["file"]["digest"] = h.hexdigest()
+
+    if context_attribute:
+        try:
+            ctx_attr = json.loads(context_attribute)
+        except json.decoder.JSONDecodeError as e:
+            print(f"Invalid context attribute: {e.msg}", file=sys.stderr)
+            sys.exit(1)
+
+        origin["attributes"] = ctx_attr
 
     return origin

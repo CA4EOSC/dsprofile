@@ -15,6 +15,14 @@ test_requires = [
     "pytest-cov"
 ]
 
+docs_requires = [
+    "mkdocs",
+    "mkdocs-autorefs",
+    "mkdocs-material",
+    "mkdocs-git-revision-date-localized-plugin",
+    "mkdocstrings[python]"
+]
+
 
 setup(
     name = "dsprofile",
@@ -31,7 +39,8 @@ setup(
     ],
     extras_require = {
         "dev": dev_requires,
-        "test": test_requires
+        "test": test_requires,
+        "docs": docs_requires
     },
     entry_points = {
         "console_scripts": ["dsprofile=dsprofile.main:main"]
