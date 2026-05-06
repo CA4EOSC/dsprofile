@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout workflow trigger ref
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Configure Git Credentials
         run: |
@@ -20,13 +20,15 @@ jobs:
           git config --local user.email ${{ secrets.PAGES_EMAIL }}
 
       - name: Install Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: 3.x
 
       - name: Install mkdocs and plugins
         run: |
-          pip install .[docs]
+          apt install gdal-data gdal-plugins libgdal34t64
+          python -m pip install --upgrade pip
+          python -m pip install -e .[docs]
 
       - name: Build and push docs
         run: mkdocs gh-deploy --force
