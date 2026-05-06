@@ -37,7 +37,8 @@ options:
   -l <level>, --log-level <level>
                         Specify the minimal log level
   -a <attribute>, --context-attribute <attribute>
-                        Add {attribute: value} pairs to metadata profile
+                        Add a JSON object containing {attribute: value} pair(s)
+                        to metadata profile
 
 Dataset formats:
   {netcdf,geotiff,shape,geopackage}
@@ -61,7 +62,7 @@ Reads a netCDF4 file and reports the group structure and information
 about any dimensions, variables, and attributes that are defined.
 
 ```
-usage: dsprofile netcdf [-h] [-o {category,group}] [-e <group0>,<group1>,...] [-m] [-d] filename
+usage: dsprofile netcdf [-h] [-o {category,group}] [-e <group0>,<group1>,...] filename
 
 positional arguments:
   filename

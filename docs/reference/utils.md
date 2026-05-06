@@ -2,4 +2,4 @@
 
 `make_reader(args)`
 
-:::dsprofile.lib.make_reader
+::: dsprofile.lib.reader.make_reader

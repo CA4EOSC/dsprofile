@@ -6,28 +6,15 @@ import pytest
 
 from dsprofile.lib.netcdf import NetCDFReader
 
-TEST_DATA_PATH = os.getenv("DSPROFILE_TEST_DATA_PATH")
 
 
 @pytest.fixture
 def context_attribute():
     return {
-      "key1": "value1",
-      "key2": 5.12,
-      "key3": [1.0, 2.0, 3.0],
-      "key4": {"nested_key": "nested_value"}
-    }
-
-
-@pytest.fixture
-def synthetic_test_file(request):
-    if TEST_DATA_PATH:
-        test_dir = TEST_DATA_PATH
-    else:
-        base_dir = os.path.dirname(request.module.__file__)
-        test_dir = os.path.join(base_dir, "data")
-    return {
-        "path": os.path.join(test_dir, "test.nc")
+        "key1": "value1",
+        "key2": 5.12,
+        "key3": [1.0, 2.0, 3.0],
+        "key4": {"nested_key": "nested_value"}
     }
 
 

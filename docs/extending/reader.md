@@ -33,7 +33,7 @@ affects *all* derived classes, including those which already exist.
 
 ### `<classmethod> build_subparser(cls, sp):`
 
-::: dsprofile.lib.Reader.build_subparser
+::: dsprofile.lib.reader.Reader.build_subparser
 
 This method is responsible for adding any type-specific options
 to the command-line argument parser.
@@ -56,11 +56,11 @@ $ dsprofile mydata /path/to/mydata.file
 
 ### `<classmethod> handle_args(cls, args) -> tuple[list, dict]:`
 
-::: dsprofile.lib.Reader.handle_args
+::: dsprofile.lib.reader.Reader.handle_args
 
 ### `process(self) -> dict:`
 
-::: dsprofile.lib.Reader.process
+::: dsprofile.lib.reader.Reader.process
 
 ## Resource ownership
 

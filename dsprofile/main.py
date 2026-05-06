@@ -40,7 +40,7 @@ def parse_args(argv):
         help="Specify the minimal log level")
     parser.add_argument("-a", "--context-attribute",
         metavar="<attribute>",
-        help="Add {attribute: value} pair to metadata profile")
+        help="Add a JSON object containing {attribute: value} pair(s) to metadata profile")
 
     sp = parser.add_subparsers(title="Dataset formats",
                                dest="command")
@@ -75,7 +75,7 @@ def handle_args(args):
     if hasattr(args, "omit_metadata") and not args.omit_metadata:
         output["metadata"] = make_file_profile(args, getattr(args, "context_attribute"))
     elif hasattr(args, "omit_metadata") and args.omit_metadata:
-        if hasattr(args, "context_attribute"):
+        if getattr(args, "context_attribute") is not None:
             print("Metadata profile cannot be omitted when "
                   "--context-attribute is specified", file=sys.stderr)
             sys.exit(1)

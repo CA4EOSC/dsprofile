@@ -19,7 +19,6 @@ docs_requires = [
     "mkdocs",
     "mkdocs-autorefs",
     "mkdocs-material",
-    "mkdocstrings",
     "mkdocs-git-revision-date-localized-plugin",
     "mkdocstrings[python]"
 ]

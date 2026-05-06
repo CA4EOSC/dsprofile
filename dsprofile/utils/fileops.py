@@ -27,6 +27,15 @@ def make_file_profile(ctx, context_attribute=None) -> dict:
         print(f"{e.strerror} for file '{ctx.filename}'", file=sys.stderr)
         sys.exit(1)
 
+    # Context attributes may be numerous and are duplicated
+    # in the 'attributes' key, so should be removed from the
+    # 'command' before inclusion.
+
+    ctx_attr_options = ("-a", "--context-attribute")
+    for idx, arg in enumerate(sys.argv):
+        if arg.lower() in ctx_attr_options:
+            sys.argv[idx+1] = "<context attributes omitted...>"
+
     origin = {
         "env": {
           "created": datetime.datetime.strftime(datetime.datetime.now(), "%Y-%m-%d %H:%M:%S"),

@@ -1,3 +1,3 @@
 # `Reader` class overview
 
-::: dsprofile.lib.Reader
+::: dsprofile.lib.reader.Reader

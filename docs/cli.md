@@ -14,7 +14,8 @@ options:
   -l <level>, --log-level <level>
                         Specify the minimal log level
   -a <attribute>, --context-attribute <attribute>
-                        Add {attribute: value} pair to metadata profile
+                        Add a JSON object containing {attribute: value}
+                        pair(s) to metadata profile
 
 Dataset formats:
   {netcdf,geotiff,shape,geopackage}

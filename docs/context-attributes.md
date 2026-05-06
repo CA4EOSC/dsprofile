@@ -69,7 +69,7 @@ output as the `attributes` value. For example:
         "key3": [1.0, 2.0, 3.0],
         "key4": {"nested_key": "nested_value"}
     },
-  "content": <omitted>
+  "content": "<omitted...>"
   }
 }
 ```
