@@ -1,9 +1,6 @@
-import os
 import subprocess
 
-import pytest
-
-from dsprofile.lib.netcdf import NetCDFReader
+from dsprofile.lib.readers.netcdf import NetCDFReader
 
 
 class TestNetCDF:

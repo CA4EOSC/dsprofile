@@ -1,11 +1,9 @@
 import json
-import os
 import subprocess
 
 import pytest
 
-from dsprofile.lib.netcdf import NetCDFReader
-
+from dsprofile.lib.readers.netcdf import NetCDFReader
 
 
 @pytest.fixture

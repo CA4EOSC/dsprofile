@@ -9,7 +9,7 @@ from shapely import Point
 import geopandas as gpd
 import pytest
 
-from dsprofile.lib.geopackage import GeoPackageReader
+from dsprofile.lib.readers.geopackage import GeoPackageReader
 
 
 def make_names(count):

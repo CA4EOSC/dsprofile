@@ -7,7 +7,7 @@ import geopandas as gpd
 from contextlib import nullcontext
 from io import BytesIO
 
-from dsprofile.lib.reader import Reader
+from dsprofile.lib.readers import Reader
 
 
 class GeoPackageReader(Reader):

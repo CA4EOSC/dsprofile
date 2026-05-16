@@ -5,7 +5,7 @@ import weakref
 import fiona
 from fiona import Collection
 
-from dsprofile.lib.reader import Reader
+from dsprofile.lib.readers import Reader
 from dsprofile.utils import logged
 
 

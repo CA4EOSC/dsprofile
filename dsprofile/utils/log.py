@@ -3,7 +3,7 @@ import logging
 import types
 
 from dsprofile import config
-from dsprofile.lib.reader import Reader
+from dsprofile.lib.readers import Reader
 
 logger = config.getLogger()
 

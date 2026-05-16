@@ -3,7 +3,7 @@ import os
 import pytest
 import rasterio as rio
 
-from dsprofile.lib.tiff import GeoTIFFReader
+from dsprofile.lib.readers.tiff import GeoTIFFReader
 
 
 TEST_DATA_PATH = os.getenv("DSPROFILE_TEST_DATA_PATH")

@@ -3,7 +3,7 @@ import sys
 import weakref
 
 from dsprofile.utils import logged
-from dsprofile.lib.reader import Reader
+from dsprofile.lib.readers import Reader
 
 import rasterio as rio
 from rasterio.errors import RasterioIOError

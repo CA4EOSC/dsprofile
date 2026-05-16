@@ -7,7 +7,8 @@ from setuptools import (
 dev_requires = [
     "flake8",
     "pdbpp",
-    "pytest"
+    "pytest",
+    "rocrate"
 ]
 
 test_requires = [
