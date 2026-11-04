@@ -139,3 +139,15 @@ positional arguments:
 options:
   -h, --help  show this help message and exit
 ```
+
+### CSV Options
+
+```bash
+usage: dsprofile csv [-h] filename
+
+positional arguments:
+  filename
+
+options:
+  -h, --help  show this help message and exit
+```

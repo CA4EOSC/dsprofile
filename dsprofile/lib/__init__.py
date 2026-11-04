@@ -8,3 +8,4 @@ from .netcdf import NetCDFReader           # noqa: F401
 from .tiff import GeoTIFFReader            # noqa: F401
 from .shape import ShapefileReader         # noqa: F401
 from .geopackage import GeoPackageReader   # noqa: F401
+from .csv import CSVReader                 # noqa: F401
