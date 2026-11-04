@@ -13,6 +13,12 @@ from dsprofile.config import log_config
 from dsprofile.utils import make_file_profile
 
 
+def get_level_map():
+    if hasattr(logging, "getLevelNamesMapping"):
+        return logging.getLevelNamesMapping()
+    return logging._nameToLevel
+
+
 def parse_args(argv):
     """
       Build an argparse environment for the package and any defined
@@ -65,9 +71,10 @@ def handle_args(args):
         sys.exit(1)
 
     if hasattr(args, "log_level"):
-        if args.log_level not in logging.getLevelNamesMapping():
+        level_map = get_level_map()
+        if args.log_level not in level_map:
             print(f"Invalid log level '{args.log_level}': ",
-                  f"Must be one of {','.join(logging.getLevelNamesMapping().keys())}",
+                  f"Must be one of {','.join(level_map.keys())}",
                 file=sys.stderr)
             sys.exit(1)
         log_config(args.log_level)

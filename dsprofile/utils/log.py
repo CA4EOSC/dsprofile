@@ -8,6 +8,12 @@ from dsprofile.lib.reader import Reader
 logger = config.getLogger()
 
 
+def _get_level_map():
+    if hasattr(logging, "getLevelNamesMapping"):
+        return logging.getLevelNamesMapping()
+    return logging._nameToLevel
+
+
 def logged(*dargs, time=False):
     """
       Decorator which causes its wrapped Reader member-function
@@ -29,7 +35,7 @@ def logged(*dargs, time=False):
 
       See tests/test_logging.py for usage examples.
     """
-    level_map = logging.getLevelNamesMapping()
+    level_map = _get_level_map()
     level_num = level_map["INFO"]
     """
       If no args are provided to the decorator, the first darg received

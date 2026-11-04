@@ -26,7 +26,7 @@ $ pytest --cov=dsprofile tests
 ## Usage
 
 ```bash
-usage: dsprofile [-h] [-m] [-d] [-l <level>] [-a <attribute>] {netcdf,geotiff,shape,geopackage} ...
+usage: dsprofile [-h] [-m] [-d] [-l <level>] [-a <attribute>] {netcdf,geotiff,shape,geopackage,csv,ascii_grid} ...
 
 Describes datasets in a variety of formats
 
@@ -41,12 +41,13 @@ options:
                         to metadata profile
 
 Dataset formats:
-  {netcdf,geotiff,shape,geopackage}
+  {netcdf,geotiff,shape,geopackage,csv,ascii_grid}
     netcdf              Extracts metadata from netCDF4 files
     geotiff             Extracts metadata from GeoTIFF files
     shape               Extracts metadata from ESRI Shape files
     geopackage          Extracts metadata from GeoPackage files
-
+    csv                 Extracts metadata from csv files
+    asciigrid           Extracts metadata from ASCII grid files
 For more information, see ca4eosc.github.io/dsprofile
 ```
 
@@ -132,6 +133,30 @@ this will refer only to file provided as a command-line argument.
 
 ```bash
 usage: dsprofile geopackage [-h] filename
+
+positional arguments:
+  filename
+
+options:
+  -h, --help  show this help message and exit
+```
+
+### CSV Options
+
+```bash
+usage: dsprofile csv [-h] filename
+
+positional arguments:
+  filename
+
+options:
+  -h, --help  show this help message and exit
+```
+
+### ASCII Grid Options
+
+```bash
+usage: dsprofile ascii_grid [-h] filename
 
 positional arguments:
   filename
